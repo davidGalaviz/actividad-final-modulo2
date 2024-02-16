@@ -16,3 +16,11 @@ class Articulo(Base):
 
     def __repr__(self) -> str:
         return f"{self.sku}({self.nombre}) - {self.unidades_disponibles} unidades disponibles."
+    
+    def to_json(self):
+        return {
+            "sku": self.sku,
+            "nombre": self.nombre,
+            "unidades_disponibles": self.unidades_disponibles,
+            "disponible": True if self.disponible else False
+        }

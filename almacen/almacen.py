@@ -1,11 +1,12 @@
 import os
 import yaml
 import argparse
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 
 from db_models import Base 
+from servicio_almacen import ServicioAlmacen
 
 # Recibimos los parámetros ingresados por el usuario
 parser = argparse.ArgumentParser(
@@ -44,22 +45,44 @@ else:
     # Hay que asegurarnos de crear la DB y las tablas correspondientes
     Base.metadata.create_all(engine)
 
+    # Creamos una instancia de nuestro servicio, la cual nos proveerá métodos
+    # para manipular los artículos 
+    servicio = ServicioAlmacen(engine)
+
 
 @app.get('/api/articulos')
 def get_articulos():
-    return []
+    # Devolvemos la lista completa de artículos
+    return servicio.get_articulos()
 
 @app.get('/api/articulos/<sku>')
 def get_articulo(sku: str):
-    return ''
+    # Devolvemos el artículo con el SKU especificado
+    return servicio.get_articulo_por_sku(sku)
 
 @app.post('/api/articulos')
 def crear_articulo():
-    return ''
+    # Leemos los datos del body del request
+    datos_articulo = request.get_json()
+
+    # Guardamos el nuevo artículo en la base de datos
+    servicio.crear_articulo(datos_articulo)
+
+    # Regresamos los datos del artículo creado
+    articulo_creado = servicio.get_articulo_por_sku(datos_articulo['sku'])
+    return articulo_creado
 
 @app.put('/api/articulos/<sku>')
-def update_articulo():
-    return ''
+def actualizar_articulo(sku: str):
+    # Leemos los datos del body del request
+    datos_articulo = request.get_json()
+
+    # Actualizamos el artículo en la base de datos
+    servicio.actualizar_articulo(sku, datos_articulo)
+
+    # Regresamos los datos del artículo actualizado
+    articulo_actualizado = servicio.get_articulo_por_sku(sku)
+    return articulo_actualizado
 
 @app.patch('/api/articulos/<sku>/registrar-recepcion')
 def registrar_recepcion_articulo(sku: str):
