@@ -1,6 +1,0 @@
-api_key: valor
-servidor: localhost
-puerto: 5000
-config: config.yml
-basedatos: bda
-path: ficheroBDA
