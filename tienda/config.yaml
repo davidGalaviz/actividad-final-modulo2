@@ -1,5 +1,0 @@
-basedatos:
-  path: tienda.db
-key_almacen: dgdfg
-puerto: 5000
-servidor: localhost
