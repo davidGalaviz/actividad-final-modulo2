@@ -51,5 +51,26 @@ class ServicioAlmacen:
 
             session.commit()
 
+    def registrar_recepcion_articulo(self, sku, cantidad):
+        with Session(self.db_engine) as session:
+            query = select(Articulo).where(Articulo.sku == sku)
+
+            articulo_para_actualizar = session.execute(query).scalar_one()
+
+            # Incrementamos la cantidad de unidades de disponibles del artículos
+            articulo_para_actualizar.unidades_disponibles = articulo_para_actualizar.unidades_disponibles + cantidad
+
+            session.commit()
+
+    def registrar_salida_articulo(self, sku, cantidad):
+        with Session(self.db_engine) as session:
+            query = select(Articulo).where(Articulo.sku == sku)
+
+            articulo_para_actualizar = session.execute(query).scalar_one()
+
+            # Decrementamos la cantidad de unidades de disponibles del artículos
+            articulo_para_actualizar.unidades_disponibles = articulo_para_actualizar.unidades_disponibles - cantidad
+
+            session.commit()
 
 

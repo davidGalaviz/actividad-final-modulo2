@@ -86,11 +86,25 @@ def actualizar_articulo(sku: str):
 
 @app.patch('/api/articulos/<sku>/registrar-recepcion')
 def registrar_recepcion_articulo(sku: str):
-    return ''
+    cantidad = request.get_json()['cantidad']
+
+    # Incrementamos la cantidad de unidades disponibles
+    servicio.registrar_recepcion_articulo(sku, cantidad)
+
+    # Regresamos los datos actualizados del artículo
+    articulo_actualizado = servicio.get_articulo_por_sku(sku)
+    return articulo_actualizado
 
 @app.patch('/api/articulos/<sku>/registrar-salida')
 def registrar_salida_articulo(sku: str):
-    return ''
+    cantidad = request.get_json()['cantidad']
+
+    # Decrementamos la cantidad de unidades disponibles
+    servicio.registrar_recepcion_articulo(sku, cantidad)
+
+    # Regresamos los datos actualizados del artículo
+    articulo_actualizado = servicio.get_articulo_por_sku(sku)
+    return articulo_actualizado
 
 
 # Levantamos la aplicación
