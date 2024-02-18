@@ -1,0 +1,221 @@
+openapi: 3.0.3
+info:
+  title: Aplicación Tienda 
+  description: |-
+    Esta es una aplicación para la gestión de los productos de una tienda.
+    
+    Algunos ejemplos de urls:
+    - Productos de la tienda:
+        http://{{server_tienda}}/api/productos
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api/productos
+tags:
+  - name: productos
+    description: Los productos de la tienda
+paths:
+  /productos:
+    put:
+      tags:
+        - productos
+      summary: Actualizar el precio y el nombre de un producto de la tienda
+      description: Actualizar producto por su id
+      operationId: actualizar_producto
+      requestBody:
+        description: Modificar un producto de la tienda
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productos'
+        required: true
+      responses:
+        '200':
+          description: Operación correcta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productos'          
+        '400':
+          description: Operación invalida
+        '404':
+          description: Producto no encontrado
+        '422':
+          description: Excepción
+    post:
+      tags:
+        - productos
+      summary: Añade un nuevo producto
+      description: Se añade un uevo producto a la tienda
+      operationId: crear_producto
+      requestBody:
+        description: Crea un nuevo producto 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productos'
+        required: true
+      responses:
+        '200':
+          description: Operación correcta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productos'          
+        '400':
+          description: Entrada invalida
+    get:
+      tags:
+        - productos
+      summary: Listar todos los productos de la tienda
+      description: Muestra todos los productos de la tienda
+      operationId: obtener_productos
+      responses:
+        '200':
+          description: Operación correcta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/productos'          
+        '400':
+          description: Estado invalido
+  /productos/{id}:
+    get:
+      tags:
+        - productos
+      summary: Obtener un producto por su id
+      description: Devuelve un producto 
+      operationId: obtener_producto
+      parameters:
+        - name: id
+          in: path
+          description: ID del producto
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación correcta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productos'          
+        '400':
+          description: ID invalido
+        '404':
+          description: No se encuentra el producto
+    delete:
+      tags:
+        - productos
+      summary: Elimina un producto 
+      description: Elimina un producto de la tienda
+      operationId: eliminar_producto
+      parameters:
+        - name: id
+          in: path
+          description: Id del producto para eliminarlo
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Id invalido
+  /productos/{id}/modificar-precio:
+    put:
+      tags:
+        - productos
+      summary: Modifica el precio de un producto
+      description: ''
+      operationId: modificar_precio
+      parameters:
+        - name: id
+          in: path
+          description: ID del producto
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Precio del producto
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productos-precio'
+        required: true      
+      responses:
+        '200':
+          description: Operación correcta
+  /productos/{id}/obtener-almacen:
+    get:
+      tags:
+        - productos
+      summary: Obtiene las unidades del almacén 
+      description: ''
+      operationId: obtener_almacen
+      parameters:
+        - name: id
+          in: path
+          description: ID del producto
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación correcta
+  /productos/{id}/vender:
+    post:
+      tags:
+        - productos
+      summary: Vende un producto de la tienda
+      description: Si hay unidades disponibles en el almacén se vende el producto
+      operationId: vender_producto
+      parameters:
+        - name: id
+          in: path
+          description: ID del producto
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Número de unidades que se quieren vender
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productos-cantidad'
+        required: true      
+      responses:
+        '200':
+          description: Operación correcta
+components:
+  schemas:
+    productos:
+      type: object
+      properties:
+        id:
+          type: string
+          example: Producto-1
+        nombre:
+          type: string
+          example: Nombre del producto 1
+        precio:
+          type: integer
+          format: int32
+          example: 7
+        unidades_vendidas:
+          type: integer
+          format: int32
+          example: 4
+    productos-precio:
+      type: object
+      properties:
+        precio:
+          type: integer
+          format: int32
+          example: 800
+    productos-cantidad:
+      type: object
+      properties:
+        cantidad:
+          type: integer
+          format: int32
+          example: 7
