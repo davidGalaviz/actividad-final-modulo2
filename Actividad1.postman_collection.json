@@ -50,7 +50,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://{{server_tienda}}/api/productos/PRODUCTO-4",
+							"raw": "http://{{server_tienda}}/api/productos/IPAD-06-01",
 							"protocol": "http",
 							"host": [
 								"{{server_tienda}}"
@@ -58,7 +58,7 @@
 							"path": [
 								"api",
 								"productos",
-								"PRODUCTO-4"
+								"IPAD-06-01"
 							]
 						}
 					},
@@ -176,7 +176,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{server_tienda}}/api/productos/PENCIL-01/obtener-almacen",
+							"raw": "http://{{server_tienda}}/api/productos/IPAD-06-01/obtener-almacen",
 							"protocol": "http",
 							"host": [
 								"{{server_tienda}}"
@@ -184,7 +184,7 @@
 							"path": [
 								"api",
 								"productos",
-								"PENCIL-01",
+								"IPAD-06-01",
 								"obtener-almacen"
 							]
 						}
@@ -192,25 +192,33 @@
 					"response": []
 				},
 				{
-					"name": "Obtener almacen",
+					"name": "Vender producto",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "api-key",
-								"value": "a346fef05669ac8eaad0",
-								"type": "text"
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"cantidad\":1}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
 							}
-						],
+						},
 						"url": {
-							"raw": "http://{{server_almacen}}/api/articulos",
+							"raw": "http://{{server_tienda}}/api/productos/IPAD-06-01/vender",
 							"protocol": "http",
 							"host": [
-								"{{server_almacen}}"
+								"{{server_tienda}}"
 							],
 							"path": [
 								"api",
-								"articulos"
+								"productos",
+								"IPAD-06-01",
+								"vender"
 							]
 						}
 					},

@@ -1,9 +1,8 @@
 """
 Módulo tienda
 """
-import argparse, yaml,os.path,jsonify, tienda_servicio
-import sqlite3
-from flask import Flask, request, jsonify, make_response
+import argparse, yaml,os.path,jsonify, tienda_servicio,json,requests,sqlite3
+from flask import Flask, request, jsonify
 from sqlite3 import Error
 
 # leemos los parámetros de entrada
@@ -18,15 +17,15 @@ args = parser.parse_args()
 fichero_config=args.config
 servidor=args.servidor #por defecto localhost
 puerto=args.puerto #por defecto 5000
-consumidor_almacen_key=args.key
+api_key_almacen=args.key
+header = {'api-key': api_key_almacen}
 
 #Si no existe el fichero de configuración lo creamos con los valores que corresponda
 if not (os.path.isfile(fichero_config)):
     data = {
         'servidor': servidor,
         'puerto':puerto,
-        'consumidor_almacen':'admin',
-        'consumidor_almacen_key':consumidor_almacen_key,
+        'api_key_almacen':api_key_almacen,
         'basedatos': {'path':'tienda.db'}
     }
     with open(f'{fichero_config}','w') as f:
@@ -46,21 +45,18 @@ if not (existe_bda):
     #creamos la tabla de productos
     c.execute('''
           CREATE TABLE IF NOT EXISTS producto
-          ([id] TEXT PRIMARY KEY, [nombre] TEXT, [unidades_vendidas] INTEGER, [precio] INTEGER)
+          ([id] TEXT PRIMARY KEY, [nombre] TEXT, [precio] INTEGER, [unidades_vendidas] INTEGER)
           ''')
-    #para pruebas cargamos del inicio tres productos
-    #hay que ver como obtener dos productos desde el almacén
-    c.execute('''
-              Insert into producto values ('IPAD-06-01','ordenador',0,700)
-              ''')
-    c.execute('''
-              Insert into producto values ('PENCIL-01','impresora',0,124)
-              ''')
+    #cargamos los productos del almacén
+    req=requests.get('http://localhost:5000/api/articulos',headers=header)
+    data=req.json()
     
-    c.execute('''
-              Insert into producto values ('PRODUCTO-3','monitor',0,300)
-              ''')
+    for item in data:
+         c.execute('Insert into producto (id,nombre,precio,unidades_vendidas) values (?,?,0,0)',
+                   (item['sku'],item['nombre'])
+                   )
     conn.commit()
+    c.close
     conn.close
 
 #comprobamos si hay productos. 
@@ -146,7 +142,8 @@ def obtener_almacen(id: str):
 
 @app.get('/api/productos/<id>/vender')
 def vender_producto(id: str):
-    response = jsonify(tienda_servicio.vender_producto(id))
+    cantidad = request.get_json()
+    response = jsonify(tienda_servicio.vender_producto(id,cantidad))
     response.status_code = 200
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response

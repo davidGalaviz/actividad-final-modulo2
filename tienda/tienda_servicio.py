@@ -2,7 +2,7 @@
 Módulo tienda servicio
 """
 import yaml,os.path,sqlite3,json,requests
-from requests.auth import HTTPBasicAuth
+
 
 #variables 
 path_bda=""
@@ -21,7 +21,7 @@ def obtener_productos():
 def obtener_producto(id):
     conn = sqlite3.connect(path_bda)
     c = conn.cursor()
-    c.execute('Select id,nombre,unidades_vendidas,precio from producto where id=?',(id,))
+    c.execute('Select id,nombre,precio,unidades_vendidas from producto where id=?',(id,))
     data = c.fetchall()
     conn.close
     return json.dumps(data)
@@ -29,7 +29,7 @@ def obtener_producto(id):
 def crear_producto(datos_producto):
     conn = sqlite3.connect(path_bda)
     c = conn.cursor()
-    c.execute('Insert into producto (id,nombre,unidades_vendidas,precio) values (?,?,0,?)',
+    c.execute('Insert into producto (id,nombre,precio,unidades_vendidas) values (?,?,?,0)',
               (datos_producto['id'],datos_producto['nombre'],datos_producto['precio']))
    
     conn.commit()
@@ -67,25 +67,26 @@ def obtener_almacen(id):
     req=requests.get('http://localhost:5000/api/articulos/'+id,headers=header)
     data=req.json()
     unidades_disponibles=data['unidades_disponibles']
-    #if unidades_disponibles>0:
-        #hay unidades, entonces se solicita traspaso del almacén a la tienda
-    #   req=requests.get('http://localhost:5000/api/articulos/'+id,headers=header)
-    #    data=req.json()
-    
-    #Si hay suficientes unidades se solicita traspaso (salida de artítulos del almacén)
-    #actualizará el producto con la nueva cantidad
-    
+    if unidades_disponibles>0:
+        #hay unidades, entonces se solicita traspaso del almacén
+        req=requests.patch('http://localhost:5000/api/articulos/'+id+'/registrar-salida',headers=header,json={"cantidad":1})
+        data=req.json()
+        
     return (data)
 
-def vender_producto(id):
-     #ira al almacén para saber cuantas unidades hay
-    #Si hay suficientes unidades se solicita traspaso (salida de artítulos del almacén)
-    #actualizará el producto con la nueva cantidad
-    conn = sqlite3.connect(path_bda)
-    c = conn.cursor()
-    #c.execute('Update producto set precio=? where id=?',(datos_producto['precio'],id))
-    conn.commit()
-    conn.close
+def vender_producto(id,cantidad):
+    req=requests.get('http://localhost:5000/api/articulos/'+id,headers=header)
+    data=req.json()
+    unidades_disponibles=data['unidades_disponibles']
+    if unidades_disponibles>cantidad['cantidad']:
+        #verificamos que tiene precio
+        #si todo correcto, decrementamos unidades disponibles y aumentamos las vendidas
+      
+        conn = sqlite3.connect(path_bda)
+        c = conn.cursor()
+        c.execute('Update producto set unidades_vendidas=unidades_vendidas+? where id=?',(cantidad['cantidad'],id))
+        conn.commit()
+        conn.close
     
     return id
 
