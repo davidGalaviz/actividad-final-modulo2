@@ -50,7 +50,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://{{server_tienda}}/api/productos/100",
+							"raw": "http://{{server_tienda}}/api/productos/PRODUCTO-4",
 							"protocol": "http",
 							"host": [
 								"{{server_tienda}}"
@@ -58,7 +58,7 @@
 							"path": [
 								"api",
 								"productos",
-								"100"
+								"PRODUCTO-4"
 							]
 						}
 					},
@@ -71,7 +71,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"id\":100,\"nombre\":\"iphone\",\"precio\":1200}",
+							"raw": "{\"id\":\"PRODUCTO-4\",\"nombre\":\"iphone\",\"precio\":1200}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -99,7 +99,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"id\":100,\"nombre\":\"iphone15\",\"precio\":1300}",
+							"raw": "{\"id\":\"PRODUCTO-4\",\"nombre\":\"iphone15\",\"precio\":1300}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -135,7 +135,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://{{server_tienda}}/api/productos/100/modificar-precio",
+							"raw": "http://{{server_tienda}}/api/productos/PRODUCTO-4/modificar-precio",
 							"protocol": "http",
 							"host": [
 								"{{server_tienda}}"
@@ -143,7 +143,7 @@
 							"path": [
 								"api",
 								"productos",
-								"100",
+								"PRODUCTO-4",
 								"modificar-precio"
 							]
 						}
@@ -156,7 +156,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://{{server_tienda}}/api/productos/100",
+							"raw": "http://{{server_tienda}}/api/productos/PRODUCTO-4",
 							"protocol": "http",
 							"host": [
 								"{{server_tienda}}"
@@ -164,7 +164,53 @@
 							"path": [
 								"api",
 								"productos",
-								"100"
+								"PRODUCTO-4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener almacen",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{server_tienda}}/api/productos/PENCIL-01/obtener-almacen",
+							"protocol": "http",
+							"host": [
+								"{{server_tienda}}"
+							],
+							"path": [
+								"api",
+								"productos",
+								"PENCIL-01",
+								"obtener-almacen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener almacen",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "a346fef05669ac8eaad0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{server_almacen}}/api/articulos",
+							"protocol": "http",
+							"host": [
+								"{{server_almacen}}"
+							],
+							"path": [
+								"api",
+								"articulos"
 							]
 						}
 					},
