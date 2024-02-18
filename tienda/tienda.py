@@ -45,19 +45,19 @@ if not (existe_bda):
     #creamos la tabla de productos
     c.execute('''
           CREATE TABLE IF NOT EXISTS producto
-          ([id] INTEGER PRIMARY KEY, [nombre] TEXT, [unidades] INTEGER, [precio] INTEGER )
+          ([id] INTEGER PRIMARY KEY, [nombre] TEXT, [unidades_vendidas] INTEGER, [precio] INTEGER)
           ''')
     #para pruebas cargamos del inicio tres productos
     #hay que ver como obtener dos productos desde el almacén
     c.execute('''
-              Insert into producto values (1,'ordenador',4,700)
+              Insert into producto values (1,'ordenador',0,700)
               ''')
     c.execute('''
-              Insert into producto values (2,'impresora',3,124)
+              Insert into producto values (2,'impresora',0,124)
               ''')
     
     c.execute('''
-              Insert into producto values (3,'monitor',2,300)
+              Insert into producto values (3,'monitor',0,300)
               ''')
     conn.commit()
     conn.close
@@ -127,27 +127,28 @@ def eliminar_producto(id: int):
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
+@app.put('/api/productos/<id>/modificar-precio')
+def modificar_precio(id: int):
+    nuevo_precio = request.get_json()
+    producto=tienda_servicio.modificar_precio(id,nuevo_precio)
+    response = jsonify(tienda_servicio.obtener_producto(producto))
+    response.status_code = 200
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
 
 @app.get('/api/productos/<id>/obtener-almacen')
 def obtener_almacen(id: int):
-    #ira al almacén para saber cuantas unidades hay
-    #Si hay suficientes unidades se solicita traspaso (salida de artítulos del almacén)
-    #actualizará el producto con la nueva cantidad
-    response=""
+    response = jsonify(tienda_servicio.obtener_almacen(id))
+    response.status_code = 200
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
-
-
-@app.get('/api/productos/<id>/modificar-precio')
-def modificar_precio(id: int):
-    response=""
-    return response
-
 
 @app.get('/api/productos/<id>/vender')
 def vender_producto(id: int):
-    response=""
+    response = jsonify(tienda_servicio.vender_producto(id))
+    response.status_code = 200
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
-
 
 if __name__=="__main__":
     app.run(host=servidor,port=puerto)
