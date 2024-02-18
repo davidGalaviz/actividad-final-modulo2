@@ -24,3 +24,12 @@ class Articulo(Base):
             "unidades_disponibles": self.unidades_disponibles,
             "disponible": True if self.disponible else False
         }
+
+class Consumidor(Base):
+    __tablename__ = 'consumidores'
+
+    nombre: Mapped[str] = mapped_column(primary_key=True)
+    api_key: Mapped[str] = mapped_column()
+
+    def __repr__(self) -> str:
+        return f'CONSUMIDOR | Nombre: {self.nombre} | API Key: {self.api_key}'

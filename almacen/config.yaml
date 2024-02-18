@@ -1,2 +1,4 @@
 basedatos:
   path: "almacen.db"
+consumidor_almacen: admin
+consumidor_almacen_key: a346fef05669ac8eaad0
