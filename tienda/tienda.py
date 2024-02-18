@@ -1,9 +1,9 @@
 """
 Módulo tienda
 """
-import argparse, yaml,os.path
+import argparse, yaml,os.path,jsonify, tienda_servicio
 import sqlite3
-from flask import Flask, request, redirect, Response
+from flask import Flask, request, jsonify, make_response
 from sqlite3 import Error
 
 # leemos los parámetros de entrada
@@ -37,6 +37,7 @@ with open(fichero_config, 'r') as ymlfile:
 
 #BDA, si no existe la bda la creamos
 path_bda=cfg['basedatos']['path']
+tienda_servicio.path_bda=path_bda
 existe_bda = os.path.isfile(path_bda)
 if not (existe_bda):
     conn = sqlite3.connect(path_bda)
@@ -66,6 +67,7 @@ conn = sqlite3.connect(path_bda)
 c = conn.cursor()
 c.execute('''SELECT count(*) FROM producto ''')
 rows = c.fetchall()
+c.close
 conn.close
 
 for row in rows:
@@ -81,37 +83,72 @@ app=Flask (__name__)
 @app.get("/api/productos")
 def obtener_productos():
     #devolvemos todos los productos
-    return Response('productos en json')
-
+    response = jsonify(tienda_servicio.obtener_productos())
+    response.status_code = 200
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
+    
 @app.get('/api/productos/<id>')
 def obtener_producto(id: int):
     # Devolvemos el producto con el id 
-    return Response(id)
+    response = jsonify(tienda_servicio.obtener_producto(id))
+    response.status_code = 200
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
 
 @app.post('/api/productos')
 def crear_producto():
-    return Response('creamos el producto:'+id)
-
-@app.put('/api/productos/<id>')
-def actualizar_producto(id: int):
-    return Response('Actualizmos el producto:'+id)
+    # Nuevo producto
+    datos_producto = request.get_json()
+    producto=tienda_servicio.crear_producto(datos_producto)
+    
+    #ahora obtenemos los datos del producto creado
+    response = jsonify(tienda_servicio.obtener_producto(producto))
+    response.status_code = 201
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
+    
+@app.put('/api/productos')
+def actualizar_producto():
+    # Datos producto
+    datos_producto = request.get_json()
+    producto=tienda_servicio.actualizar_producto(datos_producto)
+    #ahora obtenemos los datos del producto creado
+    response = jsonify(tienda_servicio.obtener_producto(producto))
+    response.status_code = 200
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
     
 @app.delete('/api/productos/<id>')
 def eliminar_producto(id: int):
-    return Response('Eliminamos el producto:'+id)
+    # Eliminamos el producto con el id 
+    response = jsonify(tienda_servicio.eliminar_producto(id))
+    response.status_code = 204
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
+
 
 @app.get('/api/productos/<id>/obtener-almacen')
 def obtener_almacen(id: int):
-    return Response('Obtenemos del almacen:'+id)
+    #ira al almacén para saber cuantas unidades hay
+    #Si hay suficientes unidades se solicita traspaso (salida de artítulos del almacén)
+    #actualizará el producto con la nueva cantidad
+    response=""
+    return response
+
 
 @app.get('/api/productos/<id>/modificar-precio')
 def modificar_precio(id: int):
-    return Response('Modificamos precio')
+    response=""
+    return response
+
 
 @app.get('/api/productos/<id>/vender')
 def vender_producto(id: int):
-    return Response('Vendemos producto')
+    response=""
+    return response
+
 
 if __name__=="__main__":
-    app.run()
+    app.run(host=servidor,port=puerto)
    
