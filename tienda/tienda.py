@@ -120,7 +120,7 @@ def actualizar_producto():
 def eliminar_producto(id: str):
     # Eliminamos el producto con el id 
     response = jsonify(tienda_servicio.eliminar_producto(id))
-    response.status_code = 204
+    response.status_code = 200
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 

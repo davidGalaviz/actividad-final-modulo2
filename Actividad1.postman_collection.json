@@ -15,6 +15,23 @@
 			"item": [
 				{
 					"name": "Todos productos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -34,6 +51,23 @@
 				},
 				{
 					"name": "Obtener producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -42,7 +76,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "pm.test(\"El código de respuesta es el correcto\", function () {\r\n    pm.expect(pm.response.code).to.equal(200);\r\n});\r\n\r\npm.test(\"El contenido del mensaje es JSON\", () => {\r\n  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r\n});\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -66,6 +100,23 @@
 				},
 				{
 					"name": "Nuevo producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -94,6 +145,23 @@
 				},
 				{
 					"name": "Modificar producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -121,7 +189,61 @@
 					"response": []
 				},
 				{
+					"name": "Eliminar producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{server_tienda}}/api/productos/PRODUCTO-4",
+							"protocol": "http",
+							"host": [
+								"{{server_tienda}}"
+							],
+							"path": [
+								"api",
+								"productos",
+								"PRODUCTO-4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Modificar precio producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -151,27 +273,24 @@
 					"response": []
 				},
 				{
-					"name": "Eliminar producto",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://{{server_tienda}}/api/productos/PRODUCTO-4",
-							"protocol": "http",
-							"host": [
-								"{{server_tienda}}"
-							],
-							"path": [
-								"api",
-								"productos",
-								"PRODUCTO-4"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Obtener almacen",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -193,6 +312,23 @@
 				},
 				{
 					"name": "Vender producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
