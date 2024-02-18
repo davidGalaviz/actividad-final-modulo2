@@ -1,7 +1,7 @@
 import os
 import yaml
 import argparse
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from sqlalchemy import create_engine
 
 from db_models import Base 
@@ -109,6 +109,16 @@ def actualizar_articulo(sku: str):
     articulo_actualizado = servicio.get_articulo_por_sku(sku)
     response = jsonify(articulo_actualizado)
     response.status_code = 200
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
+
+@app.delete('/api/articulos/<sku>')
+def eliminar_articulo(sku: str):
+    # Eliminamos el artículo de la base de datos
+    servicio.eliminar_articulo(sku)
+
+    # Regresamos una respuesta indicando que se eliminó exitosamente el artículo
+    response = make_response('', 204)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 

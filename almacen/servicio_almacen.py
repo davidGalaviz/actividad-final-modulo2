@@ -51,6 +51,16 @@ class ServicioAlmacen:
 
             session.commit()
 
+    def eliminar_articulo(self, sku):
+        with Session(self.db_engine) as session:
+            # Localizamos el artículo que queremos eliminar
+            articulo_para_eliminar = session.get(Articulo, sku)
+
+            session.delete(articulo_para_eliminar)
+
+            session.commit()
+
+
     def registrar_recepcion_articulo(self, sku, cantidad):
         with Session(self.db_engine) as session:
             query = select(Articulo).where(Articulo.sku == sku)
