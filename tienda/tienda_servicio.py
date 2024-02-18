@@ -1,9 +1,12 @@
 """
 Módulo tienda servicio
 """
-import yaml,os.path,sqlite3,json
+import yaml,os.path,sqlite3,json,requests
+from requests.auth import HTTPBasicAuth
 
+#variables 
 path_bda=""
+header = {'api-key': 'a346fef05669ac8eaad0'}
 
 def obtener_productos():
     conn = sqlite3.connect(path_bda)
@@ -27,7 +30,7 @@ def crear_producto(datos_producto):
     conn = sqlite3.connect(path_bda)
     c = conn.cursor()
     c.execute('Insert into producto (id,nombre,unidades_vendidas,precio) values (?,?,0,?)',
-              (int(datos_producto['id']),datos_producto['nombre'],datos_producto['precio']))
+              (datos_producto['id'],datos_producto['nombre'],datos_producto['precio']))
    
     conn.commit()
     conn.close
@@ -61,16 +64,18 @@ def modificar_precio(id,datos_producto):
     return id
 
 def obtener_almacen(id):
-     #ira al almacén para saber cuantas unidades hay
+    req=requests.get('http://localhost:5000/api/articulos/'+id,headers=header)
+    data=req.json()
+    unidades_disponibles=data['unidades_disponibles']
+    #if unidades_disponibles>0:
+        #hay unidades, entonces se solicita traspaso del almacén a la tienda
+    #   req=requests.get('http://localhost:5000/api/articulos/'+id,headers=header)
+    #    data=req.json()
+    
     #Si hay suficientes unidades se solicita traspaso (salida de artítulos del almacén)
     #actualizará el producto con la nueva cantidad
-    conn = sqlite3.connect(path_bda)
-    c = conn.cursor()
-    #c.execute('Update producto set precio=? where id=?',(datos_producto['precio'],id))
-    conn.commit()
-    conn.close
     
-    return id
+    return (data)
 
 def vender_producto(id):
      #ira al almacén para saber cuantas unidades hay

@@ -18,14 +18,15 @@ args = parser.parse_args()
 fichero_config=args.config
 servidor=args.servidor #por defecto localhost
 puerto=args.puerto #por defecto 5000
-key_almacen=args.key
+consumidor_almacen_key=args.key
 
 #Si no existe el fichero de configuración lo creamos con los valores que corresponda
 if not (os.path.isfile(fichero_config)):
     data = {
         'servidor': servidor,
         'puerto':puerto,
-        'key_almacen':key_almacen,
+        'consumidor_almacen':'admin',
+        'consumidor_almacen_key':consumidor_almacen_key,
         'basedatos': {'path':'tienda.db'}
     }
     with open(f'{fichero_config}','w') as f:
@@ -45,19 +46,19 @@ if not (existe_bda):
     #creamos la tabla de productos
     c.execute('''
           CREATE TABLE IF NOT EXISTS producto
-          ([id] INTEGER PRIMARY KEY, [nombre] TEXT, [unidades_vendidas] INTEGER, [precio] INTEGER)
+          ([id] TEXT PRIMARY KEY, [nombre] TEXT, [unidades_vendidas] INTEGER, [precio] INTEGER)
           ''')
     #para pruebas cargamos del inicio tres productos
     #hay que ver como obtener dos productos desde el almacén
     c.execute('''
-              Insert into producto values (1,'ordenador',0,700)
+              Insert into producto values ('IPAD-06-01','ordenador',0,700)
               ''')
     c.execute('''
-              Insert into producto values (2,'impresora',0,124)
+              Insert into producto values ('PENCIL-01','impresora',0,124)
               ''')
     
     c.execute('''
-              Insert into producto values (3,'monitor',0,300)
+              Insert into producto values ('PRODUCTO-3','monitor',0,300)
               ''')
     conn.commit()
     conn.close
@@ -89,7 +90,7 @@ def obtener_productos():
     return response
     
 @app.get('/api/productos/<id>')
-def obtener_producto(id: int):
+def obtener_producto(id: str):
     # Devolvemos el producto con el id 
     response = jsonify(tienda_servicio.obtener_producto(id))
     response.status_code = 200
@@ -120,7 +121,7 @@ def actualizar_producto():
     return response
     
 @app.delete('/api/productos/<id>')
-def eliminar_producto(id: int):
+def eliminar_producto(id: str):
     # Eliminamos el producto con el id 
     response = jsonify(tienda_servicio.eliminar_producto(id))
     response.status_code = 204
@@ -128,7 +129,7 @@ def eliminar_producto(id: int):
     return response
 
 @app.put('/api/productos/<id>/modificar-precio')
-def modificar_precio(id: int):
+def modificar_precio(id: str):
     nuevo_precio = request.get_json()
     producto=tienda_servicio.modificar_precio(id,nuevo_precio)
     response = jsonify(tienda_servicio.obtener_producto(producto))
@@ -137,14 +138,14 @@ def modificar_precio(id: int):
     return response
 
 @app.get('/api/productos/<id>/obtener-almacen')
-def obtener_almacen(id: int):
+def obtener_almacen(id: str):
     response = jsonify(tienda_servicio.obtener_almacen(id))
     response.status_code = 200
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
 @app.get('/api/productos/<id>/vender')
-def vender_producto(id: int):
+def vender_producto(id: str):
     response = jsonify(tienda_servicio.vender_producto(id))
     response.status_code = 200
     response.headers["Content-Type"] = "application/json; charset=utf-8"
