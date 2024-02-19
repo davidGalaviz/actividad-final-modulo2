@@ -1,0 +1,4 @@
+basedatos:
+  path: tienda.db
+nombre_servidor: localhost
+puerto: '3000'

@@ -1,0 +1,722 @@
+{
+	"info": {
+		"_postman_id": "5409822b-7abb-4f1b-8708-0b79ff93a9ac",
+		"name": "Actividad1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32785672"
+	},
+	"item": [
+		{
+			"name": "almacen",
+			"item": [
+				{
+					"name": "Todos artículos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "a346fef05669ac8eaad0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{server_almacen}}/api/articulos",
+							"protocol": "http",
+							"host": [
+								"{{server_almacen}}"
+							],
+							"path": [
+								"api",
+								"articulos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener artículo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "a346fef05669ac8eaad0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{server_almacen}}/api/articulos/ARTICULO-01",
+							"protocol": "http",
+							"host": [
+								"{{server_almacen}}"
+							],
+							"path": [
+								"api",
+								"articulos",
+								"ARTICULO-01"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear artículo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "a346fef05669ac8eaad0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"sku\":\"ARTICULO-01\",\"nombre\":\"Nombre 01\",\"unidades_disponibles\":50,\"disponible\":true}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{server_almacen}}/api/articulos",
+							"protocol": "http",
+							"host": [
+								"{{server_almacen}}"
+							],
+							"path": [
+								"api",
+								"articulos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar artículo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "a346fef05669ac8eaad0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nombre\":\"Nombre 01 NUEVO\",\"unidades_disponibles\":40,\"disponible\":true}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{server_almacen}}/api/articulos/ARTICULO-01",
+							"protocol": "http",
+							"host": [
+								"{{server_almacen}}"
+							],
+							"path": [
+								"api",
+								"articulos",
+								"ARTICULO-01"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar artículo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "a346fef05669ac8eaad0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{server_almacen}}/api/articulos/ARTICULO-01",
+							"protocol": "http",
+							"host": [
+								"{{server_almacen}}"
+							],
+							"path": [
+								"api",
+								"articulos",
+								"ARTICULO-01"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recibir artículo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "a346fef05669ac8eaad0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"cantidad\":30}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{server_almacen}}/api/articulos/ARTICULO-01/registrar-recepcion",
+							"protocol": "http",
+							"host": [
+								"{{server_almacen}}"
+							],
+							"path": [
+								"api",
+								"articulos",
+								"ARTICULO-01",
+								"registrar-recepcion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar salida",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "a346fef05669ac8eaad0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"cantidad\":30}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{server_almacen}}/api/articulos/ARTICULO-01/registrar-salida",
+							"protocol": "http",
+							"host": [
+								"{{server_almacen}}"
+							],
+							"path": [
+								"api",
+								"articulos",
+								"ARTICULO-01",
+								"registrar-salida"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tienda",
+			"item": [
+				{
+					"name": "Todos productos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{server_tienda}}/api/productos",
+							"protocol": "http",
+							"host": [
+								"{{server_tienda}}"
+							],
+							"path": [
+								"api",
+								"productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{server_tienda}}/api/productos/IPAD-06-01",
+							"protocol": "http",
+							"host": [
+								"{{server_tienda}}"
+							],
+							"path": [
+								"api",
+								"productos",
+								"IPAD-06-01"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Nuevo producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\":\"PRODUCTO-4\",\"nombre\":\"iphone\",\"precio\":1200}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{server_tienda}}/api/productos",
+							"protocol": "http",
+							"host": [
+								"{{server_tienda}}"
+							],
+							"path": [
+								"api",
+								"productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\":\"PRODUCTO-4\",\"nombre\":\"iphone15\",\"precio\":1300}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{server_tienda}}/api/productos",
+							"protocol": "http",
+							"host": [
+								"{{server_tienda}}"
+							],
+							"path": [
+								"api",
+								"productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{server_tienda}}/api/productos/PRODUCTO-4",
+							"protocol": "http",
+							"host": [
+								"{{server_tienda}}"
+							],
+							"path": [
+								"api",
+								"productos",
+								"PRODUCTO-4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar precio producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"El código de respuesta es el correcto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"precio\":800}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{server_tienda}}/api/productos/IPAD-06-01/modificar-precio",
+							"protocol": "http",
+							"host": [
+								"{{server_tienda}}"
+							],
+							"path": [
+								"api",
+								"productos",
+								"IPAD-06-01",
+								"modificar-precio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener almacen",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Se ha obtenido el producto del almacén\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"No se ha traido el producto del almacén.No hay unidades disponibles\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(600);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{server_tienda}}/api/productos/IPAD-06-01/obtener-almacen",
+							"protocol": "http",
+							"host": [
+								"{{server_tienda}}"
+							],
+							"path": [
+								"api",
+								"productos",
+								"IPAD-06-01",
+								"obtener-almacen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vender producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Se ha vendido el producto\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El producto no se ha vendido, porque no tiene precio\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(601);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El producto no se ha vendido, porque no hay unidades disponibles\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(600);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"El contenido del mensaje es JSON\", () => {\r",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"cantidad\":1}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{server_tienda}}/api/productos/IPAD-06-01/vender",
+							"protocol": "http",
+							"host": [
+								"{{server_tienda}}"
+							],
+							"path": [
+								"api",
+								"productos",
+								"IPAD-06-01",
+								"vender"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,197 @@
+openapi: 3.0.3
+info:
+  title: API Almacén
+  description: |-
+    API de gestión del Almacén que provee a la tienda
+    
+    Algunos ejemplos de urls:
+    - Artículos del almacén:
+        http://{{server_talmacen}}/api/articulos
+  version: 1.0.0
+servers:
+  - url: http://{{server_almacen}}/api/articulos
+tags:
+  - name: articulos
+    description: Los artículos del almacén
+paths:
+  /articulos:
+    get:
+      tags:
+        - articulos
+      summary: Lista todos los artículos del almacén
+      description: Muestra todos los artículos del almacén
+      operationId: get_articulos
+      responses:
+        '200':
+          description: Operación correcta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/articulos'          
+        '400':
+          description: Estado invalido
+    post:
+      tags:
+        - articulos
+      summary: Añade un nuevo artículo
+      description: Se añade un nuevo artículo al almacén
+      operationId: crear_articulo
+      requestBody:
+        description: Crea un nuevo artículo
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/articulos'
+        required: true
+      responses:
+        '200':
+          description: Operación correcta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/articulos'          
+        '400':
+          description: Entrada invalida
+  /articulos/{sku}:
+    get:
+      tags:
+        - articulos
+      summary: Obtener un artículo por su sku
+      description: Devuelve un artículo
+      operationId: get_articulo
+      parameters:
+        - name: sku
+          in: path
+          description: SKU del artículo
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación correcta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/articulos'          
+        '400':
+          description: ID invalido
+        '404':
+          description: No se encuentra el producto
+    put:
+      tags:
+        - articulos
+      summary: Actualizar el precio y el nombre de artículo en la almacén
+      description: Actualizar artículo por su sku
+      operationId: actualizar_articulo
+      requestBody:
+        description: Modificar un artículo del almacén
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/articulos'
+        required: true
+      responses:
+        '200':
+          description: Operación correcta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/articulos'          
+        '400':
+          description: Operación invalida
+        '404':
+          description: Producto no encontrado
+        '422':
+          description: Excepción
+    delete:
+      tags:
+        - articulos
+      summary: Elimina un artículo
+      description: Elimina un artículo del almacén
+      operationId: eliminar_articulo
+      parameters:
+        - name: sku
+          in: path
+          description: SKU del artículo para eliminarlo
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: sku invalido
+  /articulos/{sku}/registrar-recepcion:
+    put:
+      tags:
+        - articulos
+      summary: Entra un artículo en el almacén
+      description: ''
+      operationId: registrar_recepcion_articulo
+      parameters:
+        - name: sku
+          in: path
+          description: SKU del artículo
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Cantidad
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cantidad'
+        required: true      
+      responses:
+        '200':
+          description: Operación correcta
+  /articulos/{sku}/registrar-salida:
+    get:
+      tags:
+        - articulos
+      summary: Sale un artículo del almacén
+      description: ''
+      operationId: registrar_salida_articulo
+      parameters:
+        - name: sku
+          in: path
+          description: ID del producto
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Cantidad
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cantidad'
+        required: true      
+      responses:
+        '200':
+          description: Operación correcta
+components:
+  schemas:
+    articulos:
+      type: object
+      properties:
+        sku:
+          type: string
+          example: Producto-1
+        nombre:
+          type: string
+          example: Nombre del producto 1
+        unidades_disponibles:
+          type: integer
+          format: int32
+          example: 4
+        disponible:
+          type: boolean
+          example: true
+    cantidad:
+      type: object
+      properties:
+        cantidad:
+          type: integer
+          format: int32
+          example: 800
+    
