@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Aplicación Tienda 
+  title: API Tienda 
   description: |-
-    Esta es una aplicación para la gestión de los productos de una tienda.
+    API para la gestión de los productos de una tienda. Se conecta con la API de almacén para obtener los datos.
     
     Algunos ejemplos de urls:
     - Productos de la tienda:
@@ -15,54 +15,6 @@ tags:
     description: Los productos de la tienda
 paths:
   /productos:
-    put:
-      tags:
-        - productos
-      summary: Actualizar el precio y el nombre de un producto de la tienda
-      description: Actualizar producto por su id
-      operationId: actualizar_producto
-      requestBody:
-        description: Modificar un producto de la tienda
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/productos'
-        required: true
-      responses:
-        '200':
-          description: Operación correcta
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/productos'          
-        '400':
-          description: Operación invalida
-        '404':
-          description: Producto no encontrado
-        '422':
-          description: Excepción
-    post:
-      tags:
-        - productos
-      summary: Añade un nuevo producto
-      description: Se añade un uevo producto a la tienda
-      operationId: crear_producto
-      requestBody:
-        description: Crea un nuevo producto 
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/productos'
-        required: true
-      responses:
-        '200':
-          description: Operación correcta
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/productos'          
-        '400':
-          description: Entrada invalida
     get:
       tags:
         - productos
@@ -78,8 +30,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/productos'          
-        '400':
-          description: Estado invalido
+    post:
+      tags:
+        - productos
+      summary: Añade un nuevo producto
+      description: Se añade un uevo producto a la tienda
+      operationId: crear_producto
+      requestBody:
+        description: Crea un nuevo producto 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productos'
+        required: true
+      responses:
+        '201':
+          description: Operación correcta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productos'          
   /productos/{id}:
     get:
       tags:
@@ -101,10 +71,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/productos'          
-        '400':
-          description: ID invalido
-        '404':
-          description: No se encuentra el producto
+    put:
+      tags:
+        - productos
+      summary: Actualizar el precio y el nombre de un producto de la tienda
+      description: Actualizar producto por su id
+      operationId: actualizar_producto
+      requestBody:
+        description: Modificar un producto de la tienda
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productos'
+        required: true
+      responses:
+        '200':
+          description: Operación correcta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productos'          
     delete:
       tags:
         - productos
@@ -119,8 +105,8 @@ paths:
           schema:
             type: string
       responses:
-        '400':
-          description: Id invalido
+        '204':
+          description: Se ha borrado correctamente
   /productos/{id}/modificar-precio:
     put:
       tags:
@@ -160,8 +146,11 @@ paths:
           schema:
             type: string
       responses:
+        responses:
         '200':
-          description: Operación correcta
+          description: Se ha traido el producto correctamente
+        '600':
+          description: No se ha traido el producto porque no hay unidades disponibles
   /productos/{id}/vender:
     post:
       tags:
@@ -185,7 +174,11 @@ paths:
         required: true      
       responses:
         '200':
-          description: Operación correcta
+          description: Se ha vendido el producto correctamente
+        '600':
+          description: No se ha vendido el producto porque no hay unidades disponibles
+        '601':
+          description: No se ha vendido el producto porque no tiene precio
 components:
   schemas:
     productos:

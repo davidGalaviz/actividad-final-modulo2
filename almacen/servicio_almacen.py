@@ -2,6 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from db_models import Articulo
 
+
 class ServicioAlmacen:
     def __init__(self, db_engine):
         self.db_engine = db_engine
@@ -13,20 +14,20 @@ class ServicioAlmacen:
             articulos = []
 
             for articulo in session.scalars(query):
-                articulos.append(articulo.to_json());
-            
+                articulos.append(articulo.to_json())
+
         return articulos
-    
+
     def get_articulo_por_sku(self, sku: str):
         with Session(self.db_engine) as session:
             query = select(Articulo).where(Articulo.sku == sku)
 
             articulo = session.scalars(query).first()
 
-        if(articulo is not None):
+        if (articulo is not None):
             return articulo.to_json()
         return None
-    
+
     def crear_articulo(self, articulo):
         with Session(self.db_engine) as session:
             session.add(Articulo(
@@ -60,7 +61,6 @@ class ServicioAlmacen:
 
             session.commit()
 
-
     def registrar_recepcion_articulo(self, sku, cantidad):
         with Session(self.db_engine) as session:
             query = select(Articulo).where(Articulo.sku == sku)
@@ -82,5 +82,3 @@ class ServicioAlmacen:
             articulo_para_actualizar.unidades_disponibles = articulo_para_actualizar.unidades_disponibles - cantidad
 
             session.commit()
-
-

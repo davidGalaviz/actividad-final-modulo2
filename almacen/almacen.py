@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, make_response
 from sqlalchemy import create_engine
 from flask_swagger_ui import get_swaggerui_blueprint
 
-from db_models import Base 
+from db_models import Base
 from servicio_almacen import ServicioAlmacen
 from servicio_consumidores import ServicioConsumidores
 
@@ -47,7 +47,8 @@ try:
     with open(path_archivo_config, 'r') as file:
         config = yaml.safe_load(file)
 except FileNotFoundError:
-    print(f'Error: No se encontró el archivo config en la ruta {path_archivo_config}')
+    print(f'Error: No se encontró el archivo config en la ruta {
+          path_archivo_config}')
 else:
     # Inicializamos las variables que necesitamos, con los valores que obtuvimos del archivo config
     path_basedatos = config['basedatos']['path']
@@ -61,13 +62,14 @@ else:
     app.config['SERVER_NAME'] = f'{nombre_servidor}:{puerto}'
 
     # Usando este objeto estableceremos una conexión a la base de datos
-    engine = create_engine("sqlite:///" + os.path.join(basedir, path_basedatos), echo=True)
+    engine = create_engine(
+        "sqlite:///" + os.path.join(basedir, path_basedatos), echo=True)
 
     # Hay que asegurarnos de crear la DB y las tablas correspondientes
     Base.metadata.create_all(engine)
 
     # Creamos una instancia de nuestro servicio de almacén, la cual nos proveerá métodos
-    # para manipular los artículos 
+    # para manipular los artículos
     servicio_almacen = ServicioAlmacen(engine)
 
     # Creamos una instancia de nuestro servicio de consumidores, la cual nos proveerá métodos
@@ -87,7 +89,8 @@ else:
 
 try:
     # Hay que verificar que haya un consumidor por default en al archivo config
-    nombre_consumidor_admin, api_key_consumidor_admin = config['consumidor_almacen'], config['consumidor_almacen_key']
+    nombre_consumidor_admin, api_key_consumidor_admin = config[
+        'consumidor_almacen'], config['consumidor_almacen_key']
 
 except KeyError:
     # Si no están los datos del consumidor por default, hay que generarlos y guardarlos en el archivo config
@@ -138,6 +141,7 @@ def verificar_api_key():
             if not api_key_es_valida:
                 return jsonify({'error': 'Unauthorized'}), 401
 
+
 @app.post('/api/registrar-consumidor')
 def registrar_consumidor():
     # Leemos el nombre del nuevo consumidor que se quiere registrar
@@ -165,6 +169,7 @@ def get_articulos():
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
+
 @app.get('/api/articulos/<sku>')
 @requiere_api_key
 def get_articulo(sku: str):
@@ -173,6 +178,7 @@ def get_articulo(sku: str):
     response.status_code = 200
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
+
 
 @app.post('/api/articulos')
 @requiere_api_key
@@ -184,11 +190,13 @@ def crear_articulo():
     servicio_almacen.crear_articulo(datos_articulo)
 
     # Regresamos los datos del artículo creado
-    articulo_creado = servicio_almacen.get_articulo_por_sku(datos_articulo['sku'])
+    articulo_creado = servicio_almacen.get_articulo_por_sku(
+        datos_articulo['sku'])
     response = jsonify(articulo_creado)
     response.status_code = 201
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
+
 
 @app.put('/api/articulos/<sku>')
 @requiere_api_key
@@ -206,6 +214,7 @@ def actualizar_articulo(sku: str):
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
+
 @app.delete('/api/articulos/<sku>')
 @requiere_api_key
 def eliminar_articulo(sku: str):
@@ -216,6 +225,7 @@ def eliminar_articulo(sku: str):
     response = make_response('', 204)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
+
 
 @app.patch('/api/articulos/<sku>/registrar-recepcion')
 @requiere_api_key
@@ -231,6 +241,7 @@ def registrar_recepcion_articulo(sku: str):
     response.status_code = 200
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
+
 
 @app.patch('/api/articulos/<sku>/registrar-salida')
 @requiere_api_key
@@ -249,5 +260,5 @@ def registrar_salida_articulo(sku: str):
 
 
 # Levantamos la aplicación
-if __name__=="__main__":
+if __name__ == "__main__":
     app.run()
