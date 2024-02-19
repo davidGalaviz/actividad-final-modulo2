@@ -48,7 +48,7 @@ if not (existe_bda):
           ([id] TEXT PRIMARY KEY, [nombre] TEXT, [precio] INTEGER, [unidades_vendidas] INTEGER)
           ''')
     #cargamos los productos del almacén
-    req=requests.get('http://localhost:5000/api/articulos',headers=header)
+    req=requests.get('http://localhost:3000/api/articulos',headers=header)
     data=req.json()
     
     for item in data:
