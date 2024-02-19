@@ -1,0 +1,219 @@
+openapi: 3.0.0
+info:
+  title: API Almacén
+  description: API para gestión de artículos de un almacén.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: api-key
+  schemas:
+    Articulo:
+      type: object
+      properties:
+        sku:
+          type: string
+          example: IPAD-06-01
+        nombre:
+          type: string
+          example: iPad 6
+        unidades_disponibles:
+          type: number
+          example: 10
+        disponible:
+          type: boolean
+          example: true
+      required:
+        - sku
+        - nombre
+        - unidades_disponibles
+        - disponible
+    RegistrarRecepcionArticulo:
+      properties:
+        cantidad:
+          type: integer
+          example: 1
+      required:
+        - cantidad
+    RegistrarSalidaArticulo:
+      properties:
+        cantidad:
+          type: integer
+          example: 1
+      required:
+        - cantidad
+    RegistrarConsumidor:
+      properties:
+        nombre:
+          type: string
+          example: David
+      required:
+        - nombre
+    APIKey:
+      properties:
+        api_key:
+          type: string
+      required:
+        - api_key
+
+paths:
+  /articulos:
+    get:
+      summary: Regresa la lista completa de artículos del almacén.
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Articulo'
+    post:
+      summary: Crea un nuevo artículo.
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '201':
+          description: Artículo creado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Articulo"
+      requestBody:
+        description: Datos del artículo que se quiere crear.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Articulo"
+
+  /articulos/{sku}:
+    get:
+      summary: Regresa los datos de un artículo por SKU.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: sku
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Articulo"
+    put:
+      summary: Modifica los datos de un artículo.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: sku
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Datos modificados del artículo.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Articulo"
+      responses:
+        '200':
+          description: Artículo modificado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Articulo"
+    delete:
+      summary: Elimina un artículo.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: sku
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Artículo eliminado
+  /articulos/{sku}/registrar-recepcion:
+    patch:
+      summary: Incrementa la cantidad de unidades disponibles de un artículo.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: sku
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: La cantidad de unidades del artículo que se añadirán.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegistrarRecepcionArticulo"
+      responses:
+        '200':
+          description: Artículo actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Articulo"
+  /articulos/{sku}/registrar-salida:
+    patch:
+      summary: Decrementa la cantidad de unidades disponibles de un artículo.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: sku
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: La cantidad de unidades del artículo que se restarán.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegistrarSalidaArticulo"
+      responses:
+        '200':
+          description: Artículo actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Articulo"
+  /registrar-consumidor:
+    post:
+      summary: Registra un nuevo consumidor del API y le genera un API Key.
+      requestBody:
+        description: Los datos del nuevo consumidor.
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: "#/components/schemas/RegistrarConsumidor"
+      responses:
+          '200':
+            description: Consumidor registrado
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/APIKey"
