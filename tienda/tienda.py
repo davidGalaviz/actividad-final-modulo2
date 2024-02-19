@@ -29,7 +29,7 @@ puerto = args.puerto
 api_key_almacen = args.key
 header = {'api-key': api_key_almacen}
 #se debería poder obtener la url de la api de almacén de un fichero de config
-url_api_almacen="http://localhost:5000/api/articulos"
+url_api_almacen="http://localhost:3000/api/articulos"
 tienda_servicio.url_api_almacen=url_api_almacen
 
 # creamos el fichero cada arranque porque los datos pueden variar
