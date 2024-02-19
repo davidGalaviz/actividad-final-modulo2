@@ -199,7 +199,7 @@ def registrar_salida_articulo(sku: str):
     cantidad = request.get_json()['cantidad']
 
     # Decrementamos la cantidad de unidades disponibles
-    servicio_almacen.registrar_recepcion_articulo(sku, cantidad)
+    servicio_almacen.registrar_salida_articulo(sku, cantidad)
 
     # Regresamos los datos actualizados del artículo
     articulo_actualizado = servicio_almacen.get_articulo_por_sku(sku)
