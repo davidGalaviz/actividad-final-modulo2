@@ -27,7 +27,7 @@ parser.add_argument('-servidor', '--servidor', type=str,
 # También necesitamos, opcionalmente, el puerto donde serviremos el API
 parser.add_argument('-puerto', '--puerto', type=str,
                     required=False,
-                    default='5000',
+                    default='3000',
                     help="El puerto donde se expondrá el API.")
 
 
