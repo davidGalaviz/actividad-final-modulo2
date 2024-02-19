@@ -10,6 +10,10 @@ import json
 import requests
 import sqlite3
 from flask import Flask, request, jsonify, make_response
+from flask_swagger_ui import get_swaggerui_blueprint
+
+SWAGGER_URL="/api/docs" # Aquí accederemos al Swagger UI
+API_URL="/services/spec" # Aquí servimos los datos del archivo api_doc.yaml
 
 # Leemos los parámetros de entrada
 parser = argparse.ArgumentParser(description="""API de Tienda""")
@@ -88,6 +92,24 @@ if (numero_productos == 0):
 app = Flask(__name__)
 app.config['SERVER_NAME'] = f'{nombre_servidor}:{puerto}'
 
+ # Configuramos Swagger UI (para la documentación)
+swagger_ui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': 'API Tienda'
+    }
+)
+
+app.register_blueprint(swagger_ui_blueprint)
+
+# Hay que servir la información del archivo api_doc.yaml,
+# para que Swagger UI pueda leer la documentación de aquí.
+@app.route("/services/spec")
+def yaml_docs():
+    with open('tienda.yaml', 'r', encoding='utf8') as archivo_docs:
+        data = yaml.safe_load(archivo_docs)
+        return(data)
 
 @app.get("/api/productos")
 def obtener_productos():

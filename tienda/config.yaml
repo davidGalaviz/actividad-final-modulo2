@@ -1,4 +1,4 @@
 basedatos:
   path: tienda.db
 nombre_servidor: localhost
-puerto: '5000'
+puerto: 5000

@@ -47,8 +47,7 @@ try:
     with open(path_archivo_config, 'r') as file:
         config = yaml.safe_load(file)
 except FileNotFoundError:
-    print(f'Error: No se encontró el archivo config en la ruta {
-          path_archivo_config}')
+    print(f'Error: No se encontró el archivo config en la ruta {path_archivo_config}')
 else:
     # Inicializamos las variables que necesitamos, con los valores que obtuvimos del archivo config
     path_basedatos = config['basedatos']['path']
@@ -81,7 +80,7 @@ else:
         SWAGGER_URL,
         API_URL,
         config={
-            'app_name': 'JSON Placeholder/Posts'
+            'app_name': 'API Almacén'
         }
     )
 
